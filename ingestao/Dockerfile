@@ -8,4 +8,4 @@ COPY requirements.txt .
 
 RUN pip install -r requirements.txt
 
-CMD ["python", "ingestao.py"]
+CMD ["python", "-u", "ingestao.py"]
