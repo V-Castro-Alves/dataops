@@ -1,10 +1,10 @@
 import pandas as pd
 import psycopg2
 
-df = pd.read_csv('../data/vendas.csv')
+df = pd.read_csv('/data/vendas.csv')
 
 conn = psycopg2.connect(
-    host="localhost",
+    host="postgres",
     database="dataops",
     user="postgres",
     password="postgres"

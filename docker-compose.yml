@@ -1,13 +1,56 @@
 services:
   postgres:
-    image: postgres
+    image: postgres:15
+    container_name: postgres
     environment:
       POSTGRES_DB: dataops
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     ports:
       - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  ingest:
+    build:
+      context: .
+      dockerfile: ingestao/Dockerfile
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DB_HOST: postgres
+      DB_NAME: dataops
+      DB_USER: postgres
+      DB_PASS: postgres
+
+  dbt:
+    build:
+      context: ./dbt_project
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DBT_PROFILES_DIR: /root/.dbt
+    volumes:
+      - ./dbt_project:/usr/app
+      - ./dbt_project/profiles:/root/.dbt
+    working_dir: /usr/app
+    command: dbt run && dbt test
+
   metabase:
     image: metabase/metabase
+    container_name: metabase
     ports:
       - "3000:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  pgdata:
