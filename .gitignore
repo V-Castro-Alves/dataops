@@ -1,0 +1,45 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg
+*.egg-info/
+dist/
+build/
+venv/
+.env
+.env.*
+
+# Dependências
+*.lock
+Pipfile
+Pipfile.lock
+
+# Dados
+data/*.csv
+data/*.xlsx
+*.db
+*.sqlite
+
+# Configurações locais
+.DS_Store
+.idea/
+.vscode/
+*.log
+
+# dbt
+dbt_project/target/
+dbt_project/dbt_modules/
+dbt_project/.dbt/
+
+# Arquivos temporários
+*.tmp
+*.bak
+*.swp
+*~
+
+# Docker
+**/pgdata/
+
+# virtual environments
+.venv/
+.env

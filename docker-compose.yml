@@ -1,0 +1,13 @@
+services:
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_DB: dataops
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+  metabase:
+    image: metabase/metabase
+    ports:
+      - "3000:3000"
