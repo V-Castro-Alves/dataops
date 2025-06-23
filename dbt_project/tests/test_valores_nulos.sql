@@ -1,3 +1,7 @@
-SELECT *
+-- Test to verify that valor is not negative
+SELECT
+    id,
+    data,
+    valor
 FROM {{ ref('stg_vendas') }}
-WHERE valor IS NULL
+WHERE valor < 0

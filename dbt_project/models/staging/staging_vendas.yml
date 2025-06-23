@@ -1,4 +1,50 @@
+version: 2
+
 sources:
   - name: public
+    database: dataops
     tables:
       - name: vendas
+        description: Raw sales data
+        columns:
+          - name: id
+            description: Primary key
+          - name: data
+            description: Sale date
+            tests:
+              - not_null
+          - name: produto
+            description: Product name
+            tests:
+              - not_null
+          - name: loja
+            description: Store name
+            tests:
+              - not_null
+          - name: valor
+            description: Sale amount
+            tests:
+              - not_null
+
+models:
+  - name: stg_vendas
+    description: Cleaned sales data
+    columns:
+      - name: id
+        description: Primary key
+      - name: data
+        description: Sale date
+        tests:
+          - not_null
+      - name: produto
+        description: Product name
+        tests:
+          - not_null
+      - name: loja
+        description: Store name
+        tests:
+          - not_null
+      - name: valor
+        description: Sale amount
+        tests:
+          - not_null

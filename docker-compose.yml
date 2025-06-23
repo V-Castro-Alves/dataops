@@ -29,7 +29,7 @@ services:
       DB_USER: postgres
       DB_PASS: postgres
     volumes:
-      - ./data/vendas.csv:/data/vendas.csv
+      - ./data:/data
 
   dbt:
     build:
@@ -43,7 +43,16 @@ services:
       - ./dbt_project:/usr/app
       - ./dbt_project/profiles:/root/.dbt
     working_dir: /usr/app
-    command: dbt run && dbt test
+    # Replace the direct command with a shell script that runs dbt periodically
+    command: >
+      sh -c "while true; do
+        echo 'Running dbt models...';
+        dbt run;
+        echo 'Running dbt tests...';
+        dbt test;
+        echo 'Sleeping for 10 seconds...';
+        sleep 10;
+      done"
 
   metabase:
     image: metabase/metabase

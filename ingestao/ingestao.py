@@ -21,7 +21,10 @@ def ingest_csv_to_db():
             password="postgres"
         )
         cur = conn.cursor()
-        cur.execute("DROP TABLE IF EXISTS vendas")
+        
+        # Use DROP CASCADE to handle dependent objects like views
+        cur.execute("DROP TABLE IF EXISTS vendas CASCADE")
+        
         cur.execute("""
             CREATE TABLE vendas (
                 id INT,
