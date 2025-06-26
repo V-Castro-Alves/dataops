@@ -21,10 +21,7 @@ def ingest_csv_to_db():
             password="postgres"
         )
         cur = conn.cursor()
-        
-        # Use DROP CASCADE to handle dependent objects like views
         cur.execute("DROP TABLE IF EXISTS vendas CASCADE")
-        
         cur.execute("""
             CREATE TABLE vendas (
                 id INT,
@@ -35,6 +32,8 @@ def ingest_csv_to_db():
             )
         """)
         for _, row in df.iterrows():
+            # Convert empty strings to None (NULL in SQL)
+            row = [None if pd.isna(x) or x == "" else x for x in row]
             cur.execute("INSERT INTO vendas VALUES (%s, %s, %s, %s, %s)", tuple(row))
         conn.commit()
         cur.close()
